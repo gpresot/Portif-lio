@@ -204,3 +204,155 @@ h1 {
 .links-contato a:hover {
   background-color: #e8e8e8;
 }
+#form-contato {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 500px;
+  margin: 32px auto;
+  text-align: left;
+}
+
+#form-contato label {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+#form-contato input,
+#form-contato textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  border: 1px solid #aaa;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #333;
+  font: inherit;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#form-contato input:focus,
+#form-contato textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 15%);
+}
+
+#form-contato textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+#form-contato button {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2563eb;
+  color: white;
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#form-contato button:hover {
+  background-color: #1d4ed8;
+}
+.lista li {
+  padding: 0;
+}
+
+.lista button {
+  display: block;
+  width: 100%;
+  padding: 10px 18px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+:root {
+  color-scheme: light;
+  --texto: #3a3a3a;
+  --campo: #fff;
+  --borda: #aaa;
+  --hover: #e8e8e8;
+  --link: #1746a2;
+}
+
+:root[data-tema="escuro"] {
+  color-scheme: dark;
+  --texto: #f0f0f0;
+  --campo: #252525;
+  --borda: #666;
+  --hover: #383838;
+  --link: #93c5fd;
+}
+
+body {
+  color: var(--texto);
+}
+
+:root[data-tema="escuro"] body {
+  background: #171717;
+}
+
+h1,
+.subtitulo,
+.instituicao {
+  color: var(--texto);
+}
+
+a {
+  color: var(--link);
+}
+
+#busca,
+.lista,
+#form-contato input,
+#form-contato textarea,
+.preferencias button {
+  background: var(--campo);
+  color: var(--texto);
+  border-color: var(--borda);
+}
+
+.card-curso,
+.links-contato a,
+.links-contato span {
+  border-color: var(--borda);
+}
+
+#detalhes h3 {
+  border-top-color: var(--borda);
+}
+
+.lista li:hover,
+.links-contato a:hover,
+.preferencias button:hover {
+  background: var(--hover);
+}
+
+:root[data-tema="escuro"] .status {
+  background: #252525;
+  color: var(--texto);
+  border-top-color: var(--borda);
+}
+
+.preferencias {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px;
+}
+
+.preferencias button {
+  padding: 10px 16px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+}

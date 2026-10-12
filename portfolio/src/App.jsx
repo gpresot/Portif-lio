@@ -1,0 +1,178 @@
+import { useEffect, useState } from "react";
+import Sobre from "./paginas/Sobre";
+import Cursos from "./paginas/Cursos";
+import Projetos from "./paginas/Projetos";
+import Contato from "./paginas/Contato";
+import { IdiomaContext } from "./contex/Preferencias";
+import useRelogio from "./hooks/useRelogio";
+
+const textos = {
+  pt: {
+    subtitulo: "Estudante de Engenharia de Software",
+    pesquisar: "Pesquisar...",
+    sobre: "Sobre",
+    cursos: "Cursos",
+    projetos: "Projetos",
+    contato: "Contato",
+    temaEscuro: "🌙 Tema escuro",
+    temaClaro: "☀️ Tema claro",
+    semResultados: "Nenhuma seção encontrada.",
+  },
+  en: {
+    subtitulo: "Software Engineering Student",
+    pesquisar: "Search...",
+    sobre: "About",
+    cursos: "Courses",
+    projetos: "Projects",
+    contato: "Contact",
+    temaEscuro: "🌙 Dark theme",
+    temaClaro: "☀️ Light theme",
+    semResultados: "No sections found.",
+  },
+};
+
+export default function App() {
+  const [busca, setBusca] = useState("");
+  const [listaAberta, setListaAberta] = useState(false);
+  const [secao, setSecao] = useState(null);
+
+  const [idioma, setIdioma] = useState(() =>
+    localStorage.getItem("idioma") === "en" ? "en" : "pt"
+  );
+
+  const [tema, setTema] = useState(() =>
+    localStorage.getItem("tema") === "escuro" ? "escuro" : "claro"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("idioma", idioma);
+    document.documentElement.lang = idioma === "pt" ? "pt-BR" : "en";
+  }, [idioma]);
+
+  useEffect(() => {
+    document.documentElement.dataset.tema = tema;
+    localStorage.setItem("tema", tema);
+  }, [tema]);
+
+  const t = textos[idioma];
+
+  const secoes = [
+    { id: "sobre", nome: t.sobre },
+    { id: "curso", nome: t.cursos },
+    { id: "projetos", nome: t.projetos },
+    { id: "contato", nome: t.contato },
+  ];
+
+  const resultados = secoes.filter((item) =>
+    item.nome.toLowerCase().includes(busca.trim().toLowerCase())
+  );
+
+  function abrirSecao(item) {
+    setSecao(item.id);
+    setBusca("");
+    setListaAberta(false);
+  }
+
+  function alternarTema() {
+    setTema((atual) => atual === "claro" ? "escuro" : "claro");
+  }
+
+  function alternarIdioma() {
+    setIdioma((atual) => atual === "pt" ? "en" : "pt");
+    setBusca("");
+  }
+  const hora = useRelogio();
+  return (
+    <IdiomaContext.Provider value={idioma}>
+      <div className="preferencias">
+        <button type="button" onClick={alternarTema}>
+          {tema === "claro" ? t.temaEscuro : t.temaClaro}
+        </button>
+
+        <button
+          type="button"
+          onClick={alternarIdioma}
+          aria-label={
+            idioma === "pt"
+              ? "Switch to English"
+              : "Mudar para português"
+          }
+        >
+          {idioma === "pt" ? "EN" : "PT"}
+        </button>
+      </div>
+
+      <main className="centro">
+        <h1>Guilherme Presot</h1>
+        <p className="subtitulo">{t.subtitulo}</p>
+
+        <div
+          className="busca-caixa"
+          onBlur={(evento) => {
+            if (!evento.currentTarget.contains(evento.relatedTarget)) {
+              setListaAberta(false);
+            }
+          }}
+        >
+          <input
+            type="search"
+            id="busca"
+            placeholder={t.pesquisar}
+            aria-label={t.pesquisar}
+            autoComplete="off"
+            value={busca}
+            onFocus={() => setListaAberta(true)}
+            onChange={(evento) => {
+              setBusca(evento.target.value);
+              setListaAberta(true);
+            }}
+            onKeyDown={(evento) => {
+              if (evento.key === "Escape") {
+                setListaAberta(false);
+              }
+            }}
+          />
+
+          {listaAberta && (
+            <ul id="lista" className="lista">
+              {resultados.map((item) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    onClick={() => abrirSecao(item)}
+                  >
+                    {item.nome}
+                  </button>
+                </li>
+              ))}
+
+              {resultados.length === 0 && (
+                <li>{t.semResultados}</li>
+              )}
+            </ul>
+          )}
+        </div>
+
+        {secao && (
+          <section id="detalhes">
+            <h2 id="detalhes-titulo">
+              {secoes.find((item) => item.id === secao)?.nome}
+            </h2>
+
+            <div id="detalhes-texto">
+              {secao === "sobre" && <Sobre />}
+              {secao === "curso" && <Cursos />}
+              {secao === "projetos" && <Projetos />}
+              {secao === "contato" && <Contato />}
+            </div>
+          </section>
+        )}
+      </main>
+
+      <footer className="status">
+  <span>© 2026 Presot</span>
+  <span>{hora}</span>
+</footer>
+    </IdiomaContext.Provider>
+  );
+}
