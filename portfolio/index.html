@@ -1,14 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Presot | Portfólio</title>
-</head>
+  <link rel="stylesheet" href="../portfolio/src/index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
+  </head>
 <body>
+ 
+  <main class="centro">
+    <h1>Guilherme Presot</h1>
+    <p class="subtitulo">Estudante de Engenharia de Software</p>
 
+    <div class="busca-caixa">
+  <input type="search" id="busca" placeholder="Pesquisar..." autocomplete="off">
 
-
-
+  <ul id="lista" class="lista escondido">
+    <li data-destino="sobre">Sobre</li>
+    <li data-destino="curso">Cursos</li>
+    <li data-destino="projetos">Projetos</li>
+    <li data-destino="contato">Contato</li>
+  </ul>
+  
+</div>
+<section id="detalhes" class="escondido">
+  <h2 id="detalhes-titulo"></h2>
+  <p id="detalhes-texto"></p>
+</section>
+  </main>
+  
+<footer class="status">
+  <span>© 2026 Presot</span>
+  <span id="relogio">00:00:00</span>
+</footer>
+  
+<script src="js/busca.js"></script>
 </body>
 </html>
