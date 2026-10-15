@@ -2,7 +2,7 @@
 
 Site de portfólio pessoal, em página única, para apresentar minha formação, meus projetos e meus meios de contato a recrutadores e professores. É bilíngue (português e inglês) e tem tema claro e escuro.
 
-🔗 **Site:** _adicione aqui o link do site publicado_
+🔗 **Site:** [presot.dev](https://www.presot.dev/)
 
 ## Sumário
 
