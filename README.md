@@ -59,30 +59,30 @@ Wireframes de baixa fidelidade (preto, branco e cinza) que definem a organizaç�
 
 Título, subtítulo, barra de busca com a lista de seções, botões de tema e idioma no topo e rodapé com relógio.
 
-![Protótipo da tela inicial](assets/01-home.png)
+![Protótipo da tela inicial](./portfolio/src/assets/01-home.png)
 
 ### Sobre
 
-![Protótipo da seção Sobre](assets/02-sobre.png)
+![Protótipo da seção Sobre](./portfolio/src/assets/02-sobre.png)
 
 ### Cursos
 
-![Protótipo da seção Cursos](assets/03-cursos.png)
+![Protótipo da seção Cursos](./portfolio/src/assets/03-cursos.png)
 
 ### Projetos
 
-![Protótipo da seção Projetos](assets/04-projetos.png)
+![Protótipo da seção Projetos](./portfolio/src/assets/04-projetos.png)
 
 ### Contato
 
-![Protótipo da seção Contato](assets/05-contato.png)
+![Protótipo da seção Contato](./portfolio/src/assets/05-contato.png)
 
 ### Versão para celular
 
 O layout é centralizado e de coluna única, o que facilita a adaptação para telas pequenas.
 
 <p align="center">
-  <img src="assets/06-mobile.png" alt="Protótipo da tela inicial no celular" width="300">
+  <img src="./porfolio/src/assets/06-mobile.png" alt="Protótipo da tela inicial no celular" width="300">
 </p>
 
 ---
@@ -112,7 +112,7 @@ O projeto não depende de bibliotecas de roteamento, de estilos ou de gerenciame
 
 O site é uma página única. Nenhuma seção tem URL própria: a barra de busca decide qual seção aparece abaixo do cabeçalho.
 
-![Mapa da estrutura do site](assets/07-estrutura.png)
+![Mapa da estrutura do site](./portfolio/src/assets/07-estrutura.png)
 
 ### Fluxo de navegação
 
