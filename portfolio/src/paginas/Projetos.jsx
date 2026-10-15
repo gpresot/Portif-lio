@@ -1,6 +1,7 @@
 import cafeteria from "../assets/cofesite.png";
 import frangonauta from "../assets/frangonalta.mp4";
 import clima from "../assets/climaapi.png";
+import structa from "../assets/structa.png";
 import { useIdioma } from "../contex/Preferencias";
 
 const textos = {
@@ -30,6 +31,14 @@ const textos = {
       aprendizados:
         "Criação de endpoints REST, consumo de API externa e organização em Controller e Service.",
     },
+    structa: {
+      titulo: "Structa — 2026",
+      imagem: "Tela de login da plataforma Structa",
+      descricao:
+        "Plataforma para gestão de demandas e problemas no ambiente escolar, centralizando solicitações, votações e acompanhamento de ocorrências em um único sistema. Promove comunicação, transparência e eficiência na resolução de demandas.",
+      aprendizados:
+        "Desenvolvimento web full stack, criação de uma API com Node.js e organização de um sistema com diferentes tipos de usuário.",
+    },
   },
   en: {
     tecnologias: "Technologies:",
@@ -56,6 +65,14 @@ const textos = {
         "A REST API developed with a teammate that retrieves weather data for Belo Horizonte, Nova Lima, Betim and Contagem through Open-Meteo. It returns JSON data including current temperature, forecast highs and lows, humidity and wind speed.",
       aprendizados:
         "Creating REST endpoints, consuming an external API and organizing code into Controller and Service layers.",
+    },
+    structa: {
+      titulo: "Structa — 2026",
+      imagem: "Structa platform login screen",
+      descricao:
+        "A platform for managing requests and problems in the school environment, centralizing demands, voting and issue tracking in a single system. It promotes communication, transparency and efficiency in resolving demands.",
+      aprendizados:
+        "Full stack web development, building an API with Node.js and structuring a system with different user types.",
     },
   },
 };
@@ -135,6 +152,30 @@ export default function Projetos() {
 
         <a
           href="https://github.com/gpresot/DIAW-API-Clima"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t.verProjeto}
+        </a>
+      </article>
+
+      <article className="card-projeto">
+        <img src={structa} alt={t.structa.imagem} />
+
+        <h3>{t.structa.titulo}</h3>
+        <p>{t.structa.descricao}</p>
+
+        <p>
+          <strong>{t.tecnologias}</strong> HTML, CSS, JavaScript, Node.js,
+          JSON Server, Bootstrap {idioma === "pt" ? "e" : "and"} jQuery.
+        </p>
+
+        <p>
+          <strong>{t.aprendizados}</strong> {t.structa.aprendizados}
+        </p>
+
+        <a
+          href="https://github.com/gpresot/SEU-REPOSITORIO"
           target="_blank"
           rel="noopener noreferrer"
         >
