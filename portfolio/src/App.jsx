@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Sobre from "./paginas/Sobre";
 import Cursos from "./paginas/Cursos";
 import Projetos from "./paginas/Projetos";
@@ -35,6 +35,7 @@ export default function App() {
   const [busca, setBusca] = useState("");
   const [listaAberta, setListaAberta] = useState(false);
   const [secao, setSecao] = useState(null);
+  const buscaRef = useRef(null);
 
   const [idioma, setIdioma] = useState(() =>
     localStorage.getItem("idioma") === "en" ? "en" : "pt"
@@ -43,6 +44,25 @@ export default function App() {
   const [tema, setTema] = useState(() =>
     localStorage.getItem("tema") === "escuro" ? "escuro" : "claro"
   );
+
+  const hora = useRelogio();
+
+  useEffect(() => {
+    function fecharAoTocarFora(evento) {
+      if (
+        buscaRef.current &&
+        !buscaRef.current.contains(evento.target)
+      ) {
+        setListaAberta(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", fecharAoTocarFora);
+
+    return () => {
+      document.removeEventListener("pointerdown", fecharAoTocarFora);
+    };
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("idioma", idioma);
@@ -74,14 +94,14 @@ export default function App() {
   }
 
   function alternarTema() {
-    setTema((atual) => atual === "claro" ? "escuro" : "claro");
+    setTema((atual) => (atual === "claro" ? "escuro" : "claro"));
   }
 
   function alternarIdioma() {
-    setIdioma((atual) => atual === "pt" ? "en" : "pt");
+    setIdioma((atual) => (atual === "pt" ? "en" : "pt"));
     setBusca("");
   }
-  const hora = useRelogio();
+
   return (
     <IdiomaContext.Provider value={idioma}>
       <div className="preferencias">
@@ -108,8 +128,12 @@ export default function App() {
 
         <div
           className="busca-caixa"
+          ref={buscaRef}
           onBlur={(evento) => {
-            if (!evento.currentTarget.contains(evento.relatedTarget)) {
+            if (
+              evento.relatedTarget &&
+              !evento.currentTarget.contains(evento.relatedTarget)
+            ) {
               setListaAberta(false);
             }
           }}
@@ -119,9 +143,12 @@ export default function App() {
             id="busca"
             placeholder={t.pesquisar}
             aria-label={t.pesquisar}
+            aria-expanded={listaAberta}
+            aria-controls="lista"
             autoComplete="off"
             value={busca}
             onFocus={() => setListaAberta(true)}
+            onClick={() => setListaAberta(true)}
             onChange={(evento) => {
               setBusca(evento.target.value);
               setListaAberta(true);
@@ -170,9 +197,9 @@ export default function App() {
       </main>
 
       <footer className="status">
-  <span>© 2026 Presot</span>
-  <span>{hora}</span>
-</footer>
+        <span>© 2026 Presot</span>
+        <span>{hora}</span>
+      </footer>
     </IdiomaContext.Provider>
   );
 }
