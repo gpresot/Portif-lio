@@ -364,3 +364,134 @@ a {
 .cursos {
   margin-top: 1.5rem;
 }
+
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+    background-attachment: scroll;
+  }
+
+
+  .preferencias {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    gap: 8px;
+  }
+
+  .preferencias button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+
+  .centro {
+    min-height: 100svh;
+    min-height: 100dvh;
+    padding: 24px 16px;
+    gap: 16px;
+  }
+
+
+  h1 {
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -1px;
+    text-align: center;
+  }
+
+
+  .subtitulo {
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    letter-spacing: 1px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+
+  .busca-caixa {
+    width: 100%;
+    max-width: 420px;
+    margin-top: 16px;
+  }
+
+  #busca {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px 16px;
+  }
+
+
+  #detalhes {
+    width: 100%;
+    max-width: 100%;
+    padding: 24px 20px 80px;
+    margin-top: 0;
+  }
+
+  #detalhes-titulo {
+    font-size: 2.2rem;
+    text-align: center;
+  }
+
+  #detalhes-texto {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  #detalhes h3 {
+    font-size: 1.4rem;
+  }
+
+
+  .foto-sobre {
+    display: block;
+    width: min(240px, 75vw);
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    margin: 20px auto;
+    border-radius: 50%;
+  }
+
+
+  .cursos {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .card-curso {
+    padding: 16px;
+    min-width: 0;
+  }
+
+
+  .card-projeto img,
+  .video-projeto {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+
+  .links-contato {
+    gap: 10px;
+  }
+
+  .links-contato a {
+    padding: 10px 12px;
+  }
+
+
+  .status {
+    font-size: 0.7rem;
+    padding: 6px 10px;
+    z-index: 20;
+  }
+}
