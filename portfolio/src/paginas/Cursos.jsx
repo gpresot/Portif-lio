@@ -1,6 +1,7 @@
 import { useIdioma } from "../contex/Preferencias";
 
 const cursos = {
+  
   pt: [
     {
       instituicao: "FGV Online",
@@ -67,15 +68,14 @@ export default function Cursos() {
   const idioma = useIdioma();
 
   return (
-    <div className="cursos">
-      {cursos[idioma].map((curso, indice) => (
-        <article className="card-curso" key={indice}>
-          <span className="instituicao">{curso.instituicao}</span>
-          <h3>{curso.nome}</h3>
-          <p>{curso.periodo}</p>
-          <p>{curso.descricao}</p>
-        </article>
-      ))}
-    </div>
-  );
-}
+  <div className="cursos">
+    {cursos[idioma].map((curso, indice) => (
+      <article className="card-curso" key={indice}>
+        <span className="instituicao">{curso.instituicao}</span>
+        <h3>{curso.nome}</h3>
+        <p>{curso.periodo}</p>
+        <p>{curso.descricao}</p>
+      </article>
+    ))}
+  </div>
+);}

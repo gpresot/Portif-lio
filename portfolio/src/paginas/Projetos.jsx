@@ -83,18 +83,25 @@ export default function Projetos() {
 
   return (
     <>
-      <article className="card-projeto">
-        <img src={cafeteria} alt={t.cafeteria.imagem} />
 
-        <h3>{t.cafeteria.titulo}</h3>
-        <p>{t.cafeteria.descricao}</p>
+    <br></br>
+      <article className="card-projeto">
+        <img src={structa} alt={t.structa.imagem} />
+
+        <h3>{t.structa.titulo}</h3>
+        <p>{t.structa.descricao}</p>
 
         <p>
-          <strong>{t.tecnologias}</strong> HTML {idioma === "pt" ? "e" : "and"} CSS
+          <strong>{t.tecnologias}</strong> HTML, CSS, JavaScript, Node.js,
+          JSON Server, Bootstrap {idioma === "pt" ? "e" : "and"} jQuery.
+        </p>
+
+        <p>
+          <strong>{t.aprendizados}</strong> {t.structa.aprendizados}
         </p>
 
         <a
-          href="https://github.com/gpresot/cofee-site"
+          href="https://pmg-es-2026-1-ti1-0427100-structa.onrender.com/login/login.html"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -135,6 +142,30 @@ export default function Projetos() {
         </a>
       </article>
 
+
+
+
+      <article className="card-projeto">
+        <img src={cafeteria} alt={t.cafeteria.imagem} />
+
+        <h3>{t.cafeteria.titulo}</h3>
+        <p>{t.cafeteria.descricao}</p>
+
+        <p>
+          <strong>{t.tecnologias}</strong> HTML {idioma === "pt" ? "e" : "and"} CSS
+        </p>
+
+        <a
+          href="https://github.com/gpresot/cofee-site"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t.verProjeto}
+        </a>
+      </article>
+
+
+
       <article className="card-projeto">
         <img src={clima} alt={t.clima.imagem} />
 
@@ -159,29 +190,7 @@ export default function Projetos() {
         </a>
       </article>
 
-      <article className="card-projeto">
-        <img src={structa} alt={t.structa.imagem} />
 
-        <h3>{t.structa.titulo}</h3>
-        <p>{t.structa.descricao}</p>
-
-        <p>
-          <strong>{t.tecnologias}</strong> HTML, CSS, JavaScript, Node.js,
-          JSON Server, Bootstrap {idioma === "pt" ? "e" : "and"} jQuery.
-        </p>
-
-        <p>
-          <strong>{t.aprendizados}</strong> {t.structa.aprendizados}
-        </p>
-
-        <a
-          href="https://github.com/gpresot/SEU-REPOSITORIO"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t.verProjeto}
-        </a>
-      </article>
     </>
   );
 }
