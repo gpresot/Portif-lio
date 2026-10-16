@@ -82,9 +82,8 @@ Título, subtítulo, barra de busca com a lista de seções, botões de tema e i
 O layout é centralizado e de coluna única, o que facilita a adaptação para telas pequenas.
 
 <p align="center">
-  <img src="./porfolio/src/assets/06-mobile.png" alt="Protótipo da tela inicial no celular" width="300">
+  <img src="./portfolio/src/assets/06-mobile.png" alt="Protótipo da tela inicial no celular" width="300">
 </p>
-
 ---
 
 ## 3. Tecnologias previstas
