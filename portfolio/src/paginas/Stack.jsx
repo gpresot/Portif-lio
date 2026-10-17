@@ -1,8 +1,8 @@
-import { Component, lazy, Suspense } from "react";
+import { Component, lazy, Suspense, useState } from "react";
 import { useIdioma } from "../contex/Preferencias";
 import { stack } from "../data/stack";
+import "./Stack.css";
 
-// O globo (e o three.js) só é baixado quando esta seção é aberta
 const SkillsGlobe = lazy(() => import("../components/SkillsGlobe"));
 
 const textos = {
@@ -11,24 +11,29 @@ const textos = {
       "As linguagens e ferramentas que uso nos meus estudos e projetos.",
     dica: "Arraste para girar · clique em uma tecnologia para abrir o site oficial",
     carregando: "Carregando o globo...",
+    globo: "Globo",
+    lista: "Lista",
+    visualizacao: "Visualização das tecnologias",
   },
   en: {
     descricao:
       "The languages and tools I use in my studies and projects.",
     dica: "Drag to rotate · click a technology to open its official site",
     carregando: "Loading the globe...",
+    globo: "Globe",
+    lista: "List",
+    visualizacao: "Technology view",
   },
 };
 
-// Lista simples, usada se o navegador não tiver WebGL ou o globo falhar
 function ListaSimples() {
   return (
-    <ul className="skills-lista">
+    <ul className="stack-grade">
       {stack.map(({ name, icon: Icon, color, link }) => (
         <li key={name}>
           <a href={link} target="_blank" rel="noopener noreferrer">
             <Icon aria-hidden="true" style={{ color }} />
-            {name}
+            <span>{name}</span>
           </a>
         </li>
       ))}
@@ -54,17 +59,46 @@ class GloboComFallback extends Component {
 
 export default function Stack() {
   const idioma = useIdioma();
-  const t = textos[idioma];
+  const t = textos[idioma] ?? textos.pt;
+  const [visualizacao, setVisualizacao] = useState("globo");
 
   return (
-    <>
-      <p style={{ textAlign: "center" }}>{t.descricao}</p>
+    <div className="stack-painel">
+      <p className="stack-descricao">{t.descricao}</p>
 
-      <GloboComFallback>
-        <Suspense fallback={<p style={{ textAlign: "center" }}>{t.carregando}</p>}>
-          <SkillsGlobe skills={stack} dica={t.dica} />
-        </Suspense>
-      </GloboComFallback>
-    </>
+      <div
+        className="stack-alternador"
+        role="group"
+        aria-label={t.visualizacao}
+      >
+        <button
+          type="button"
+          aria-pressed={visualizacao === "globo"}
+          onClick={() => setVisualizacao("globo")}
+        >
+          🌐 {t.globo}
+        </button>
+
+        <button
+          type="button"
+          aria-pressed={visualizacao === "lista"}
+          onClick={() => setVisualizacao("lista")}
+        >
+          ▦ {t.lista}
+        </button>
+      </div>
+
+      {visualizacao === "lista" ? (
+        <ListaSimples />
+      ) : (
+        <GloboComFallback>
+          <Suspense
+            fallback={<p className="stack-descricao">{t.carregando}</p>}
+          >
+            <SkillsGlobe skills={stack} dica={t.dica} />
+          </Suspense>
+        </GloboComFallback>
+      )}
+    </div>
   );
 }

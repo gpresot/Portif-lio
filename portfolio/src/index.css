@@ -364,3 +364,15 @@ a {
 .cursos {
   margin-top: 1.5rem;
 }
+.busca-caixa {
+  position: relative;
+  z-index: 10;
+}
+
+.lista {
+  max-height: 250px;
+  max-height: min(250px, 45dvh);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
