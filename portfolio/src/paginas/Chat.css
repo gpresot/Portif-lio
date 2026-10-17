@@ -1,0 +1,210 @@
+.chat-perfil {
+  width: 100%;
+  min-width: 0;
+  color: var(--texto, #333);
+  font-size: 1rem;
+  text-align: left;
+}
+
+.chat-aviso {
+  margin: 0 0 18px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+.chat-sugestoes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-perfil button {
+  padding: 10px 14px;
+  border: 1px solid var(--borda, #aaa);
+  border-radius: 10px;
+  background: var(--campo, #fff);
+  color: var(--texto, #333);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.chat-sugestoes button {
+  text-align: left;
+}
+
+.chat-perfil button:hover:not(:disabled) {
+  background: var(--hover, #e8e8e8);
+}
+
+.chat-perfil button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.chat-mensagens {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0;
+}
+
+.chat-mensagem {
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--borda, #aaa);
+  border-radius: 12px;
+}
+
+.chat-user {
+  margin-left: 20px;
+  background: var(--hover, #e8e8e8);
+}
+
+.chat-model {
+  margin-right: 20px;
+  background: var(--campo, #fff);
+}
+
+.chat-mensagem strong {
+  font-size: 0.8rem;
+}
+
+.chat-mensagem p {
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+
+.chat-erro {
+  margin: 12px 0;
+}
+
+.chat-form {
+  margin-top: 16px;
+}
+
+.chat-form textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 90px;
+  padding: 12px;
+  border: 1px solid var(--borda, #aaa);
+  border-radius: 10px;
+  background: var(--campo, #fff);
+  color: var(--texto, #333);
+  font: inherit;
+  font-size: 16px;
+  resize: vertical;
+}
+
+.chat-acoes {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chat-acoes .chat-enviar {
+  background: var(--texto, #333);
+  color: var(--campo, #fff);
+}
+
+.chat-acoes .chat-enviar:hover:not(:disabled) {
+  background: var(--texto, #333);
+  opacity: 0.85;
+}
+
+/* Botão que abre o popup */
+
+.chat-flutuante {
+  position: fixed;
+  right: 20px;
+  bottom: calc(55px + env(safe-area-inset-bottom, 0px));
+  z-index: 100;
+  max-width: calc(100vw - 32px);
+  padding: 14px 18px;
+  border: 1px solid var(--borda, #aaa);
+  border-radius: 999px;
+  background: var(--campo, #fff);
+  color: var(--texto, #333);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 15%);
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Janela do chat */
+
+.chat-popup {
+  position: fixed;
+  right: 20px;
+  bottom: calc(55px + env(safe-area-inset-bottom, 0px));
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: min(400px, calc(100vw - 32px));
+  height: min(560px, 75vh);
+  height: min(560px, calc(100dvh - 100px - env(safe-area-inset-bottom, 0px)));
+  border: 1px solid var(--borda, #aaa);
+  border-radius: 16px;
+  background: var(--campo, #fff);
+  color: var(--texto, #333);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
+  overflow: hidden;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.chat-popup-cabecalho {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--borda, #aaa);
+}
+
+.chat-popup-cabecalho button {
+  min-width: 44px;
+  min-height: 44px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.chat-popup-corpo {
+  flex: 1;
+  min-height: 0;
+  padding: 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chat-flutuante:focus-visible,
+.chat-popup button:focus-visible,
+.chat-popup textarea:focus-visible {
+  outline: 2px solid var(--link, #1746a2);
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .chat-popup {
+    right: 12px;
+    width: calc(100vw - 24px);
+  }
+
+  .chat-flutuante {
+    right: 12px;
+    font-size: 0.9rem;
+  }
+}

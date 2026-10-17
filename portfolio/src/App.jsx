@@ -8,8 +8,10 @@ import { IdiomaContext } from "./contex/Preferencias";
 import useRelogio from "./hooks/useRelogio";
 import CodandoAgora from "./components/CodandoAgora";
 import WakaTime from "./paginas/WakaTime";
+import Chat from "./paginas/Chat";
 // O visualizador de PDF só é baixado quando a seção é aberta
 const Curriculo = lazy(() => import("./paginas/Curriculo"));
+
 
 const textos = {
   pt: {
@@ -47,7 +49,7 @@ export default function App() {
   const [listaAberta, setListaAberta] = useState(false);
   const [secao, setSecao] = useState(null);
   const buscaRef = useRef(null);
-
+  const [chatAberto, setChatAberto] = useState(false);
   const [idioma, setIdioma] = useState(() =>
     localStorage.getItem("idioma") === "en" ? "en" : "pt"
   );
@@ -219,7 +221,50 @@ export default function App() {
           </section>
         )}
       </main>
+        {!chatAberto && (
+  <button
+    type="button"
+    className="chat-flutuante"
+    onClick={() => setChatAberto(true)}
+    aria-haspopup="dialog"
+    aria-controls="chat-popup"
+  >
+    💬 {idioma === "pt" ? "Pergunte sobre mim" : "Ask about me"}
+  </button>
+)}
 
+{chatAberto && (
+  <div
+    id="chat-popup"
+    className="chat-popup"
+    role="dialog"
+    aria-labelledby="chat-popup-titulo"
+    onKeyDown={(evento) => {
+      if (evento.key === "Escape") {
+        setChatAberto(false);
+      }
+    }}
+  >
+    <div className="chat-popup-cabecalho">
+      <strong id="chat-popup-titulo">
+        {idioma === "pt" ? "Pergunte sobre mim" : "Ask about me"}
+      </strong>
+
+      <button
+        type="button"
+        autoFocus
+        onClick={() => setChatAberto(false)}
+        aria-label={idioma === "pt" ? "Fechar chat" : "Close chat"}
+      >
+        ✕
+      </button>
+    </div>
+
+    <div className="chat-popup-corpo">
+      <Chat />
+    </div>
+  </div>
+)}
       <footer className="status">
         <span>© 2026 Presot</span>
         <span>{hora}</span>
