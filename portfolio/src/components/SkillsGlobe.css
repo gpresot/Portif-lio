@@ -1,0 +1,116 @@
+.skills-globe {
+  /* cor do globo e dos ícones: preto no tema claro, branco no escuro */
+  --globo: #111111;
+  width: 100%;
+  text-align: center;
+}
+
+:root[data-tema="escuro"] .skills-globe {
+  --globo: #ffffff;
+}
+
+.skills-globe__stage {
+  position: relative;
+  width: min(100%, 460px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  /* arrastar na vertical continua rolando a página; na horizontal gira o globo */
+  touch-action: pan-y !important;
+}
+
+.skills-globe__stage:active {
+  cursor: grabbing;
+}
+
+/* camada dos ícones, reposicionados a cada frame pelo JavaScript */
+.skills-globe__layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.skills-globe__li {
+  display: contents;
+}
+
+.skills-globe__item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--skill);
+  text-decoration: none;
+  opacity: 0;
+  will-change: transform, opacity;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.skills-globe__icon {
+  width: 36px;
+  height: 36px;
+}
+
+.skills-globe__label {
+  font-family: "Pixelify Sans", monospace;
+  font-size: 0.7rem;
+  line-height: 1.1;
+  white-space: nowrap;
+  color: var(--texto);
+}
+
+.skills-globe__item:hover .skills-globe__label,
+.skills-globe__item:focus-visible .skills-globe__label {
+  text-decoration: underline;
+}
+
+.skills-globe__item:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.skills-globe__hint {
+  margin-top: 12px;
+  font-size: 1rem;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* plano B: se o WebGL não estiver disponível */
+.skills-lista {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skills-lista a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  font-size: 1rem;
+  text-decoration: none;
+  color: var(--texto);
+}
+
+.skills-lista a:hover {
+  background: var(--hover);
+}

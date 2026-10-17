@@ -68,7 +68,7 @@ const textos = {
   },
 };
 
-export default function Sobre() {
+export default function Sobre({ aoVerCurriculo }) {
   const idioma = useIdioma();
   const t = textos[idioma];
 
@@ -107,14 +107,9 @@ export default function Sobre() {
       <h3>{t.curriculo}</h3>
       <p>{t.descricaoCurriculo}</p>
 
-      <a
-        href={`${import.meta.env.BASE_URL}curriculo.pdf`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="btn-curriculo"
-      >
+            <button type="button" className="btn-curriculo" onClick={aoVerCurriculo}>
         {t.verCurriculo}
-      </a>
+      </button>
 
       <h3>{t.mais}</h3>
       {t.interesses.map((interesse) => (

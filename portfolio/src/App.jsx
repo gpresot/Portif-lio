@@ -1,10 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import Sobre from "./paginas/Sobre";
 import Cursos from "./paginas/Cursos";
 import Projetos from "./paginas/Projetos";
+import Stack from "./paginas/Stack";
 import Contato from "./paginas/Contato";
 import { IdiomaContext } from "./contex/Preferencias";
 import useRelogio from "./hooks/useRelogio";
+import CodandoAgora from "./components/CodandoAgora";
+import WakaTime from "./paginas/WakaTime";
+// O visualizador de PDF só é baixado quando a seção é aberta
+const Curriculo = lazy(() => import("./paginas/Curriculo"));
 
 const textos = {
   pt: {
@@ -13,10 +18,13 @@ const textos = {
     sobre: "Sobre",
     cursos: "Cursos",
     projetos: "Projetos",
+    stack: "Stack",
+    curriculo: "Currículo",
     contato: "Contato",
     temaEscuro: "🌙 Tema escuro",
     temaClaro: "☀️ Tema claro",
     semResultados: "Nenhuma seção encontrada.",
+    carregando: "Carregando...",
   },
   en: {
     subtitulo: "Software Engineering Student",
@@ -24,10 +32,13 @@ const textos = {
     sobre: "About",
     cursos: "Courses",
     projetos: "Projects",
+    stack: "Stack",
+    curriculo: "Resume",
     contato: "Contact",
     temaEscuro: "🌙 Dark theme",
     temaClaro: "☀️ Light theme",
     semResultados: "No sections found.",
+    carregando: "Loading...",
   },
 };
 
@@ -78,9 +89,13 @@ export default function App() {
 
   const secoes = [
     { id: "sobre", nome: t.sobre },
+    { id: "stack", nome: t.stack },
+    { id: "curriculo", nome: t.curriculo },
     { id: "curso", nome: t.cursos },
     { id: "projetos", nome: t.projetos },
+    { id: "wakatime", nome: "WakaTime" },
     { id: "contato", nome: t.contato },
+    
   ];
 
   const resultados = secoes.filter((item) =>
@@ -125,7 +140,7 @@ export default function App() {
       <main className="centro">
         <h1>Guilherme Presot</h1>
         <p className="subtitulo">{t.subtitulo}</p>
-
+        <CodandoAgora/>
         <div
           className="busca-caixa"
           ref={buscaRef}
@@ -187,9 +202,18 @@ export default function App() {
             </h2>
 
             <div id="detalhes-texto">
-              {secao === "sobre" && <Sobre />}
+              {secao === "sobre" && (
+                <Sobre aoVerCurriculo={() => setSecao("curriculo")} />
+              )}
               {secao === "curso" && <Cursos />}
+              {secao === "wakatime" && <WakaTime />}
               {secao === "projetos" && <Projetos />}
+              {secao === "stack" && <Stack />}
+              {secao === "curriculo" && (
+                <Suspense fallback={<p>{t.carregando}</p>}>
+                  <Curriculo />
+                </Suspense>
+              )}
               {secao === "contato" && <Contato />}
             </div>
           </section>

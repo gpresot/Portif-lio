@@ -1,0 +1,92 @@
+.cv {
+  width: 100%;
+  text-align: center;
+}
+
+.cv-barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cv-zoom,
+.cv-acoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cv-zoom button,
+.cv-botao {
+  padding: 8px 14px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: var(--campo);
+  color: var(--texto);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cv-zoom button:hover:not(:disabled),
+.cv-botao:hover {
+  background: var(--hover);
+}
+
+.cv-zoom button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.cv-botao.principal {
+  border-color: var(--link);
+  color: var(--link);
+}
+
+.cv-zoom-valor {
+  min-width: 3.2em;
+  font-family: "Pixelify Sans", monospace;
+  font-size: 1rem;
+}
+
+/* moldura que rola quando o zoom passa de 100% */
+.cv-area {
+  max-height: 75vh;
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  background: rgba(128, 128, 128, 0.14);
+}
+
+.cv-pagina {
+  width: fit-content;
+  margin: 0 auto 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  background: #fff;
+}
+
+.cv-pagina:last-child {
+  margin-bottom: 0;
+}
+
+.cv-aviso {
+  padding: 24px 8px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .cv-barra {
+    justify-content: center;
+  }
+
+  .cv-area {
+    max-height: 70vh;
+    padding: 8px;
+  }
+}
