@@ -376,3 +376,90 @@ a {
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
 }
+@media (max-width: 768px) {
+  .preferencias {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+    padding: 0;
+    z-index: 20;
+  }
+
+  .preferencias button {
+    padding: 8px 10px;
+    font-size: 0.875rem;
+  }
+
+  .centro {
+    width: 100%;
+    min-height: 100svh;
+    padding: 100px 20px 70px;
+    gap: 18px;
+  }
+
+  .centro h1 {
+    max-width: 100%;
+    font-size: clamp(2rem, 9vw, 3rem);
+    line-height: 1.15;
+  }
+
+  .subtitulo {
+    max-width: 100%;
+    font-size: 1rem;
+    line-height: 1.6;
+    letter-spacing: 1px;
+  }
+
+  .codando-agora {
+    max-width: 100%;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .busca-caixa {
+    width: 100%;
+    max-width: 420px;
+    margin-top: 12px;
+    flex-shrink: 0;
+  }
+
+  #busca {
+    font-size: 16px;
+  }
+
+  #detalhes {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-top: 28px;
+    padding: 0;
+  }
+
+  #detalhes-titulo {
+    font-size: 2rem;
+  }
+
+  #detalhes-texto {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  #detalhes h3 {
+    font-size: 1.5rem;
+  }
+
+  #form-contato {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .status {
+    font-size: 0.7rem;
+    z-index: 30;
+  }
+}
