@@ -43,6 +43,30 @@ Não informe telefone, endereço residencial ou dados pessoais privados.
 Use texto simples, sem HTML.
 `;
 
+// Modelos tentados em ordem. Se um deixar de existir (404), tenta o próximo.
+// Para forçar um específico, defina GEMINI_MODEL nas variáveis de ambiente.
+const MODELOS = [
+  process.env.GEMINI_MODEL,
+  "gemini-3.5-flash-lite",
+  "gemini-3.1-flash-lite",
+  "gemini-2.5-flash-lite",
+].filter(Boolean);
+
+async function consultarGemini(modelo, corpo) {
+  return fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modelo)}:generateContent`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": process.env.GEMINI_API_KEY,
+      },
+      body: JSON.stringify(corpo),
+      signal: AbortSignal.timeout(25000),
+    }
+  );
+}
+
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
 
@@ -85,39 +109,36 @@ export default async function handler(req, res) {
   }
 
   try {
-    const modelo = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
+    const corpo = {
+      systemInstruction: {
+        parts: [{
+          text: `${PERFIL}\nResponda em ${
+            idioma === "en" ? "inglês" : "português brasileiro"
+          }.`,
+        }],
+      },
+      contents: mensagens.map((item) => ({
+        role: item.role,
+        parts: [{ text: item.text.trim() }],
+      })),
+      generationConfig: {
+        // folga para modelos que "pensam" antes de responder
+        maxOutputTokens: 1024,
+        temperature: 0.3,
+      },
+    };
 
-    const resposta = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modelo)}:generateContent`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": process.env.GEMINI_API_KEY,
-        },
-        body: JSON.stringify({
-          systemInstruction: {
-            parts: [{
-              text: `${PERFIL}\nResponda em ${
-                idioma === "en" ? "inglês" : "português brasileiro"
-              }.`,
-            }],
-          },
-          contents: mensagens.map((item) => ({
-            role: item.role,
-            parts: [{ text: item.text.trim() }],
-          })),
-          generationConfig: {
-            maxOutputTokens: 350,
-            temperature: 0.3,
-          },
-        }),
-        signal: AbortSignal.timeout(25000),
-      }
-    );
+    let resposta;
+
+    for (const modelo of MODELOS) {
+      resposta = await consultarGemini(modelo, corpo);
+      if (resposta.status !== 404) break;
+      console.error("Gemini: modelo indisponível (404):", modelo);
+    }
 
     if (!resposta.ok) {
-      console.error("Gemini: status", resposta.status);
+      const detalhe = await resposta.text().catch(() => "");
+      console.error("Gemini: status", resposta.status, detalhe.slice(0, 400));
 
       return res.status(resposta.status === 429 ? 429 : 502).json({
         erro: resposta.status === 429
@@ -137,7 +158,8 @@ export default async function handler(req, res) {
     if (!texto) throw new Error("Resposta vazia");
 
     return res.status(200).json({ resposta: texto });
-  } catch {
+  } catch (e) {
+    console.error("Chat:", e);
     return res.status(502).json({
       erro: "Não foi possível responder agora.",
     });
