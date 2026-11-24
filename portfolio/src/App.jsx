@@ -9,6 +9,7 @@ import useRelogio from "./hooks/useRelogio";
 import CodandoAgora from "./components/CodandoAgora";
 import WakaTime from "./paginas/WakaTime";
 import Chat from "./paginas/Chat";
+import Experiencia from "./paginas/Experiencia";
 // O visualizador de PDF só é baixado quando a seção é aberta
 const Curriculo = lazy(() => import("./paginas/Curriculo"));
 
@@ -18,6 +19,7 @@ const textos = {
     subtitulo: "Estudante de Engenharia de Software",
     pesquisar: "Pesquisar...",
     sobre: "Sobre",
+    experiencia: "Experiência",
     cursos: "Cursos",
     projetos: "Projetos",
     stack: "Stack",
@@ -27,11 +29,15 @@ const textos = {
     temaClaro: "☀️ Tema claro",
     semResultados: "Nenhuma seção encontrada.",
     carregando: "Carregando...",
+    inicio: "← Início",
+    baixarCv: "📄 Baixar currículo",
+    navegacao: "Seções do portfólio",
   },
   en: {
     subtitulo: "Software Engineering Student",
     pesquisar: "Search...",
     sobre: "About",
+    experiencia: "Experience",
     cursos: "Courses",
     projetos: "Projects",
     stack: "Stack",
@@ -41,6 +47,9 @@ const textos = {
     temaClaro: "☀️ Light theme",
     semResultados: "No sections found.",
     carregando: "Loading...",
+    inicio: "← Home",
+    baixarCv: "📄 Download resume",
+    navegacao: "Portfolio sections",
   },
 };
 
@@ -49,6 +58,7 @@ export default function App() {
   const [listaAberta, setListaAberta] = useState(false);
   const [secao, setSecao] = useState(null);
   const buscaRef = useRef(null);
+  const detalhesRef = useRef(null);
   const [chatAberto, setChatAberto] = useState(false);
   const [idioma, setIdioma] = useState(() =>
     localStorage.getItem("idioma") === "en" ? "en" : "pt"
@@ -89,15 +99,22 @@ export default function App() {
 
   const t = textos[idioma];
 
+  // Ao abrir uma seção, rola até ela (importante no celular)
+  useEffect(() => {
+    if (secao) {
+      detalhesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [secao]);
+
   const secoes = [
     { id: "sobre", nome: t.sobre },
+    { id: "experiencia", nome: t.experiencia },
+    { id: "projetos", nome: t.projetos },
     { id: "stack", nome: t.stack },
     { id: "curriculo", nome: t.curriculo },
     { id: "curso", nome: t.cursos },
-    { id: "projetos", nome: t.projetos },
     { id: "wakatime", nome: "WakaTime" },
     { id: "contato", nome: t.contato },
-    
   ];
 
   const resultados = secoes.filter((item) =>
@@ -108,6 +125,13 @@ export default function App() {
     setSecao(item.id);
     setBusca("");
     setListaAberta(false);
+  }
+
+  function irParaInicio() {
+    setSecao(null);
+    setBusca("");
+    setListaAberta(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function alternarTema() {
@@ -140,7 +164,11 @@ export default function App() {
       </div>
 
       <main className="centro">
-        <h1>Guilherme Presot</h1>
+        <h1>
+          <button type="button" className="titulo-inicio" onClick={irParaInicio}>
+            Guilherme Presot
+          </button>
+        </h1>
         <p className="subtitulo">{t.subtitulo}</p>
         <CodandoAgora/>
         <div
@@ -197,8 +225,33 @@ export default function App() {
           )}
         </div>
 
+        <nav className="nav-secoes" aria-label={t.navegacao}>
+          {secoes.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={secao === item.id ? "chip ativo" : "chip"}
+              aria-current={secao === item.id ? "page" : undefined}
+              onClick={() => abrirSecao(item)}
+            >
+              {item.nome}
+            </button>
+          ))}
+        </nav>
+
+        <a
+          className="link-cv"
+          href={`${import.meta.env.BASE_URL}curriculo.pdf`}
+          download={idioma === "pt" ? "Curriculo-Guilherme-Presot.pdf" : "Resume-Guilherme-Presot.pdf"}
+        >
+          {t.baixarCv}
+        </a>
+
         {secao && (
-          <section id="detalhes">
+          <section id="detalhes" ref={detalhesRef}>
+            <button type="button" className="btn-inicio" onClick={irParaInicio}>
+              {t.inicio}
+            </button>
             <h2 id="detalhes-titulo">
               {secoes.find((item) => item.id === secao)?.nome}
             </h2>
@@ -207,6 +260,7 @@ export default function App() {
               {secao === "sobre" && (
                 <Sobre aoVerCurriculo={() => setSecao("curriculo")} />
               )}
+              {secao === "experiencia" && <Experiencia />}
               {secao === "curso" && <Cursos />}
               {secao === "wakatime" && <WakaTime />}
               {secao === "projetos" && <Projetos />}

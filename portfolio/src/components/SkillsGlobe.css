@@ -63,7 +63,7 @@
 }
 
 .skills-globe__label {
-  font-family: "Pixelify Sans", monospace;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   font-size: 0.7rem;
   line-height: 1.1;
   white-space: nowrap;
