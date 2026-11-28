@@ -9,6 +9,8 @@ const textos = {
     totalGeral: "Total geral",
     total: "Últimos 7 dias",
     media: "Média diária",
+    abaSemana: "Semana",
+    abaGeral: "Geral",
     carregando: "Carregando estatísticas...",
     erro: "Não foi possível carregar as estatísticas.",
     vazio: "Nenhuma atividade registrada neste período.",
@@ -21,6 +23,8 @@ const textos = {
     totalGeral: "All-time total",
     total: "Last 7 days",
     media: "Daily average",
+    abaSemana: "Week",
+    abaGeral: "All time",
     carregando: "Loading statistics...",
     erro: "Unable to load statistics.",
     vazio: "No activity recorded during this period.",
@@ -43,6 +47,7 @@ export default function WakaTime() {
   const t = textos[idioma] ?? textos.pt;
   const [dados, setDados] = useState(null);
   const [erro, setErro] = useState(false);
+  const [visao, setVisao] = useState("semana");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -88,6 +93,10 @@ export default function WakaTime() {
   if (erro && !dados) return <p role="status">{t.erro}</p>;
   if (!dados) return <p role="status">{t.carregando}</p>;
 
+  const temGeral = Array.isArray(dados.linguagensGeral);
+  const linguagens =
+    visao === "geral" && temGeral ? dados.linguagensGeral : dados.linguagens;
+
   return (
     <div className="waka">
       <h3>{t.titulo}</h3>
@@ -116,11 +125,33 @@ export default function WakaTime() {
         <p role="status">{t.atualizando}</p>
       )}
 
-      {dados.linguagens.length === 0 ? (
+      {temGeral && (
+        <div className="waka-abas">
+          <button
+            type="button"
+            className="waka-aba"
+            aria-pressed={visao === "semana"}
+            onClick={() => setVisao("semana")}
+          >
+            {t.abaSemana}
+          </button>
+
+          <button
+            type="button"
+            className="waka-aba"
+            aria-pressed={visao === "geral"}
+            onClick={() => setVisao("geral")}
+          >
+            {t.abaGeral}
+          </button>
+        </div>
+      )}
+
+      {linguagens.length === 0 ? (
         <p>{t.vazio}</p>
       ) : (
         <ul className="waka-linguagens">
-          {dados.linguagens.map((item) => (
+          {linguagens.map((item) => (
             <li key={item.nome}>
               <div className="waka-linha">
                 <strong>{item.nome}</strong>
