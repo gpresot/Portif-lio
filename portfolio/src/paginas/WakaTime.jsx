@@ -5,8 +5,9 @@ import "./WakaTime.css";
 const textos = {
   pt: {
     titulo: "Minha atividade de programação",
-    periodo: "Últimos 7 dias",
-    total: "Tempo total",
+    periodo: "Total geral e estatísticas dos últimos 7 dias",
+    totalGeral: "Total geral",
+    total: "Últimos 7 dias",
     media: "Média diária",
     carregando: "Carregando estatísticas...",
     erro: "Não foi possível carregar as estatísticas.",
@@ -16,8 +17,9 @@ const textos = {
   },
   en: {
     titulo: "My coding activity",
-    periodo: "Last 7 days",
-    total: "Total time",
+    periodo: "All-time total and last 7 days stats",
+    totalGeral: "All-time total",
+    total: "Last 7 days",
     media: "Daily average",
     carregando: "Loading statistics...",
     erro: "Unable to load statistics.",
@@ -92,6 +94,13 @@ export default function WakaTime() {
       <p className="waka-periodo">{t.periodo}</p>
 
       <div className="waka-resumo">
+        {dados.totalGeral != null && (
+          <div className="waka-card">
+            <span>{t.totalGeral}</span>
+            <strong>{formatarTempo(dados.totalGeral)}</strong>
+          </div>
+        )}
+
         <div className="waka-card">
           <span>{t.total}</span>
           <strong>{formatarTempo(dados.total)}</strong>
