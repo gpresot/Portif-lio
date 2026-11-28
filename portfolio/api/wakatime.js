@@ -1,3 +1,23 @@
+// Lê o JSON de uma resposta do WakaTime; devolve null se a consulta falhou.
+async function lerDados(resultado) {
+  if (resultado.status !== "fulfilled" || !resultado.value.ok) return null;
+
+  try {
+    const { data } = await resultado.value.json();
+    return data ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function mapearLinguagens(lista) {
+  return lista.map((item) => ({
+    nome: item.name,
+    segundos: item.total_seconds,
+    porcentagem: item.percent,
+  }));
+}
+
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
@@ -19,50 +39,45 @@ export default async function handler(req, res) {
       signal: AbortSignal.timeout(10000),
     };
 
-    // Semana e total geral em paralelo; se o total geral falhar, a semana continua funcionando.
-    const [semana, geral] = await Promise.allSettled([
+    // Semana e geral em paralelo; se o geral falhar, a semana continua funcionando.
+    const [semana, geral, geralLinguagens] = await Promise.allSettled([
       fetch(`${base}/stats/last_7_days`, opcoes),
       fetch(`${base}/all_time_since_today`, opcoes),
+      fetch(`${base}/stats/all_time`, opcoes),
     ]);
 
-    if (semana.status !== "fulfilled" || !semana.value.ok) {
+    const dadosSemana = await lerDados(semana);
+
+    if (!dadosSemana || !Array.isArray(dadosSemana.languages)) {
       throw new Error("Falha na consulta");
     }
 
-    const { data } = await semana.value.json();
+    const dadosGeral = await lerDados(geral);
+    const statsGeral = await lerDados(geralLinguagens);
 
-    if (!data || !Array.isArray(data.languages)) {
-      throw new Error("Resposta inválida");
-    }
+    // Enquanto o WakaTime calcula o geral, ele responde 202 com dados parciais: não usa.
+    const totalGeralPronto =
+      dadosGeral?.is_up_to_date !== false &&
+      typeof dadosGeral?.total_seconds === "number";
 
-    // Total geral: só vale se o WakaTime terminou de calcular (senão volta 202 com dados parciais).
-    let totalGeral = null;
-    let geralAtualizado = true;
+    const linguagensGeralPronto =
+      statsGeral?.is_up_to_date !== false &&
+      Array.isArray(statsGeral?.languages);
 
-    if (geral.status === "fulfilled" && geral.value.ok) {
-      try {
-        const { data: dadosGeral } = await geral.value.json();
-        geralAtualizado = dadosGeral?.is_up_to_date !== false;
-
-        if (geralAtualizado && typeof dadosGeral?.total_seconds === "number") {
-          totalGeral = dadosGeral.total_seconds;
-        }
-      } catch {
-        totalGeral = null;
-      }
-    }
+    const geralPendente =
+      dadosGeral?.is_up_to_date === false ||
+      statsGeral?.is_up_to_date === false;
 
     // Envia somente as estatísticas escolhidas, sem projetos ou arquivos.
     const dados = {
-      total: data.total_seconds ?? 0,
-      totalGeral,
-      media: data.daily_average ?? 0,
-      atualizado: data.is_up_to_date !== false && geralAtualizado,
-      linguagens: data.languages.map((item) => ({
-        nome: item.name,
-        segundos: item.total_seconds,
-        porcentagem: item.percent,
-      })),
+      total: dadosSemana.total_seconds ?? 0,
+      totalGeral: totalGeralPronto ? dadosGeral.total_seconds : null,
+      media: dadosSemana.daily_average ?? 0,
+      atualizado: dadosSemana.is_up_to_date !== false && !geralPendente,
+      linguagens: mapearLinguagens(dadosSemana.languages),
+      linguagensGeral: linguagensGeralPronto
+        ? mapearLinguagens(statsGeral.languages)
+        : null,
     };
 
     res.setHeader(
