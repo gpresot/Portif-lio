@@ -56,3 +56,24 @@
 .waka-porcentagem {
   font-size: 0.85rem;
 }
+
+.waka-abas {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.waka-aba {
+  padding: 8px 16px;
+  border: 1px solid var(--borda, #aaa);
+  border-radius: 999px;
+  background: var(--campo, #fff);
+  color: var(--texto, #3a3a3a);
+  font: inherit;
+  cursor: pointer;
+}
+
+.waka-aba[aria-pressed="true"] {
+  background: var(--texto, #3a3a3a);
+  color: var(--campo, #fff);
+}
